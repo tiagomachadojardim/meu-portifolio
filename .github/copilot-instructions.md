@@ -2,92 +2,126 @@
 
 ## Visão Geral da Arquitetura
 
-Este é um portfólio pessoal moderno construído com **Next.js 15 (App Router)**, **React 19**, **TypeScript** e **Tailwind CSS**. A aplicação segue um padrão de arquitetura baseada em componentes com separação clara de responsabilidades.
+**Landing page/portfólio 100% estático** construído com **Next.js 15 App Router + React 19 + TypeScript**. Configurado para **export estático** (`output: "export"`) - sem Node.js runtime, sem API routes, sem backend. Deployável em qualquer CDN/hosting estático (GitHub Pages, Vercel, Netlify). A arquitetura prioriza **composição de componentes**, **providers para estado global**, e **dados tipados em arquivos TypeScript**.
 
-## Estrutura Principal
-
-### Layout e Providers
-- **Layout raiz**: `src/app/layout.tsx` - configuração global com fonte Rubik e metadados
-- **ClientProviders**: `src/components/providers/ClientProviders.tsx` - envolve theme provider e layout principal
-- **MainLayout**: `src/components/layouts/MainLayout.tsx` - estrutura base com menu, conteúdo e footer
-
-### Sistema de Tema
-- **Hook customizado**: `src/hooks/use-theme.tsx` - gerencia tema claro/escuro com persistência no localStorage
-- **Toggle de tema**: implementado no `SimpleMenu` com ícones react-icons (BsMoonStars/BsSun)
-- **Configuração Tailwind**: classe `dark:` utilizada globalmente, darkMode configurado como 'class'
-
-### Dados e Tipos
-- **Tipagem centralizada**: `src/types/index.ts` - define interfaces para Work, Service, Experience, etc.
-- **Dados estáticos**: `src/data/` contém arrays exportados (works.ts, services.ts, experiences.ts)
-- **Estrutura de Work**: inclui id, title, category, thumbnailUrl, description, images[], previewUrl, featureList[], attributes[]
-
-### Componentes Reutilizáveis
-- **Formulários**: `src/components/form/` - Input, Textarea, Button com estilos consistentes
-- **Seções**: `src/components/partials/` - componentes de seção da homepage (HeroSection, AboutSection, WorksSection, etc.)
-- **Menu responsivo**: `SimpleMenu.tsx` usa Headless UI Dialog para mobile sidebar
-
-### Páginas e Roteamento
-- **Homepage**: `src/app/page.tsx` - seções empilhadas sequencialmente
-- **Páginas dedicadas**: `/works`, `/blog`, `/contact` com navegação "Voltar ao Início"
-- **Layout de página Works**: grid responsivo com filtros por categoria (All, Web Development, Mobile App, UI/UX Design)
-
-## Padrões de Desenvolvimento
-
-### Componentes
-- **'use client'** obrigatório para componentes com estado, eventos ou hooks
-- **Framer Motion** para animações - padrão `initial/animate/transition` com `whileInView` para scroll
-- **Next.js Image** componente usado consistentemente com width/height específicos
-- **React Icons** biblioteca padrão (Fi*, Bs*, Hi* prefixos)
-
-### Estilos e Design System
-- **Cores primárias**: configuradas em tailwind.config.ts com escala primary-50 a primary-900 (cor base: ff4c60)
-- **Responsividade**: mobile-first com breakpoints xs(475px), sm, md, lg, xl, 2xl
-- **Container**: classe Tailwind padrão para centralização de conteúdo
-- **Dark mode**: sempre implementar classes `dark:` para compatibilidade com tema
-
-### Estado e Interatividade
-- **Filtros**: useState para categoria ativa em WorksSection (padrão: 'All')
-- **Modais**: Headless UI Dialog para menus mobile e modais
-- **Scroll**: react-scroll-to-top com ícone FiArrowUp customizado
-
-## Comandos Essenciais
-
-```bash
-# Desenvolvimento com Turbopack (mais rápido)
-npm run dev
-
-# Build de produção
-npm run build
-
-# Linting
-npm run lint
+### Fluxo de Renderização Crítico
+```
+layout.tsx (SSR) 
+  → ClientProviders ('use client')
+    → ThemeProvider (gerencia tema via Context)
+      → MainLayout (SimpleMenu + children + Footer)
+        → page.tsx (seções empilhadas)
 ```
 
-## Convenções Específicas
+**Por quê?** `suppressHydrationWarning` no `<html>` é necessário porque o tema é aplicado via classe `dark` no `documentElement` durante hidratação no cliente (evita flash de tema incorreto).
 
-### Nomenclatura de Arquivos
-- Componentes: PascalCase com .tsx (ex: HeroSection.tsx)
-- Dados: camelCase com .ts (ex: works.ts, services.ts)
-- Hooks: use-kebab-case.tsx (ex: use-theme.tsx)
+## Sistema de Tema - Implementação Específica
 
-### Estrutura de Dados
-- **Works**: sempre incluir category para filtros, thumbnailUrl para listagem, images[] para detalhes
-- **Attributes**: array de {name, value} para metadados de projetos
-- **FeatureList**: array de strings para características do projeto
+**`src/hooks/use-theme.tsx`** implementa enum `Theme.LIGHT | Theme.DARK` com:
+- Context API (não Redux/Zustand)
+- Persistência: `localStorage.setItem('theme', ...)` 
+- Aplicação: `document.documentElement.classList.add/remove('dark')`
+- Leitura inicial no useEffect (evita SSR mismatch)
 
-### Animações
-- Usar `viewport={{ once: true }}` para animações que devem ocorrer apenas uma vez
-- Padrão de delay: `transition={{ duration: 0.8 }}` para suavidade
-- Container animations: `initial={{ opacity: 0, y: 20 }}` seguido de `animate={{ opacity: 1, y: 0 }}`
+**Padrão obrigatório**: Sempre incluir classes `dark:text-*` e `dark:bg-*` em novos componentes. Tailwind `darkMode: 'class'` requer essa abordagem.
 
-## Dependências Chave
-- **@headlessui/react**: componentes acessíveis (Dialog, Transition)
-- **framer-motion**: animações e transições
-- **classnames**: concatenação condicional de classes CSS
-- **react-intersection-observer**: detecção de scroll para animações
+## Dados Estáticos & Tipos
 
-## Customização Rápida
-- **Dados pessoais**: editar arrays em `src/data/`
-- **Cores**: modificar escala primary em `tailwind.config.ts`
-- **Avatar**: substituir `public/images/avatar/man.png`
-- **Projetos**: adicionar ao array `works` com imagens em `public/images/works/`
+**Fonte única de verdade**: `src/data/*.ts` → exporta arrays tipados
+- `works.ts`: Work[] com `category` (usado para filtros), `attributes[]`, `featureList[]`
+- `services.ts`: Service[] com `name`, `description`, `image`
+- `experiences.ts`: Experience[] com datas e descrições
+
+**Tipos centralizados**: `src/types/index.ts`
+```typescript
+Work {
+  id: number
+  category: string  // usado em filtros: 'Web Development' | 'Mobile App' | 'UI/UX Design'
+  attributes: {name: string, value: string | number}[]  // metadados exibidos
+  featureList: string[]  // lista de bullets
+}
+```
+
+**Ao adicionar projetos**: Sempre inclua `category` existente (filtros dependem disso) e adicione imagens em `public/images/works/`.
+
+## Animações com Framer Motion
+
+**Padrão universal** em componentes de seção (`*Section.tsx`):
+```tsx
+<motion.div
+  initial={{ opacity: 0, y: 20 }}
+  whileInView={{ opacity: 1, y: 0 }}
+  viewport={{ once: true }}  // IMPORTANTE: anima só na primeira view
+  transition={{ duration: 0.8 }}
+>
+```
+
+**Por quê `viewport={{ once: true }}`?** Performance - evita recalcular animações em scroll repetido. Usado em 100% das seções do projeto.
+
+## Componentes & Client Boundaries
+
+**Regra**: Componentes com estado/eventos/hooks **requerem** `'use client'` no topo.
+- `SimpleMenu.tsx`: gerencia sidebar mobile (Headless UI Dialog) e tema toggle
+- `*Section.tsx`: todos usam Framer Motion → todos são `'use client'`
+- `page.tsx`: composição pura → pode ser Server Component
+
+**Headless UI Dialog** padrão para modals:
+```tsx
+<Dialog open={sidebarOpen} onClose={setSidebarOpen}>
+  <Transition.Child enter="transition-opacity ease-linear duration-300" ...>
+    {/* overlay */}
+  </Transition.Child>
+</Dialog>
+```
+
+## Navegação & Roteamento
+
+**Homepage**: Seções empilhadas com IDs para scroll (e.g., `#about`, `#contact`)
+**Links internos**: `<Link href="/#about">` para scroll suave na mesma página
+**Páginas dedicadas**: `/works`, `/cv` (com navegação "Voltar ao Início")
+**Formulário de contato**: Apenas visual/UI - não há backend para processar envios. Links sociais (WhatsApp, email) são a forma real de contato.
+
+## Estilos & Design System
+
+**Cores primárias**: Escala `primary-{50-900}` em `tailwind.config.ts` - base `#ff4c60` (vermelho/rosa)
+**Breakpoints custom**: `xs: 475px` (único não-padrão do Tailwind)
+**Fonte**: Rubik via `next/font/google` com CSS variable `--font-rubik`
+
+**Padrões de classe comuns**:
+- Container: `container mx-auto px-4 md:px-6` (centralização responsiva)
+- Hover em links: `hover:text-primary-500 hover:scale-110 transition-all duration-150`
+- Dark mode texto: `text-gray-900 dark:text-white` ou `text-gray-600 dark:text-gray-400`
+
+## Desenvolvimento & Build
+
+```bash
+npm run dev      # Turbopack dev server (mais rápido que webpack)
+npm run build    # Build estático (output: export)
+npm run lint     # ESLint (configurado para ignorar builds)
+```
+
+**next.config.ts importante**:
+- `output: "export"` → gera site estático puro (HTML/CSS/JS), deployável em qualquer hosting
+- `images.unoptimized: true` → necessário para export estático (sem otimização de imagem server-side)
+- `eslint.ignoreDuringBuilds: true` & `typescript.ignoreBuildErrors: true` → projeto pessoal, prioriza agilidade
+
+⚠️ **Sem capacidades de backend**: Não há processamento server-side, APIs ou banco de dados. Todo conteúdo vem de `src/data/*.ts`.
+
+## SEO & Metadados
+
+**`src/app/layout.tsx`**: 
+- `metadata` exportado com Open Graph + Twitter Cards
+- `metadataBase` usa `NEXT_PUBLIC_SITE_URL` env variable
+- Structured data: `<Script id="jsonld-person">` com schema.org Person
+
+**robots.ts & sitemap.ts**: Gerados dinamicamente (App Router conventions)
+
+## Customização Rápida - Checklist
+
+1. **Dados pessoais**: Editar `src/data/*.ts` (works, services, experiences)
+2. **Cores**: Modificar `primary-*` em `tailwind.config.ts`
+3. **Avatar**: Substituir `public/images/avatar/man.png`
+4. **Links sociais/contato**: Atualizar URLs em `HeroSection.tsx` e `ContactSection.tsx`
+5. **Metadata SEO**: Editar `src/app/layout.tsx`
+6. **Categorias de projetos**: Garantir consistência entre `works.ts` e filtros em `WorksSection.tsx`
+7. **Deploy**: `npm run build` gera pasta `out/` → upload para qualquer static hosting

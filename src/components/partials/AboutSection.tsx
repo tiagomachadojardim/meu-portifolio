@@ -2,15 +2,28 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FiCode, FiLayers, FiUsers, FiTrendingUp } from 'react-icons/fi';
+import { FiCode, FiLayers, FiTrendingUp, FiZap } from 'react-icons/fi';
 import { experiences } from '@/data/experiences';
+import { works } from '@/data/works';
 
 const AboutSection = () => {
+  const productionProjects = works.filter(w =>
+    w.attributes.some(a => a.name === 'Status' && a.value.toString().includes('Produção'))
+  ).length;
+  const developmentProjects = works.filter(w =>
+    w.attributes.some(a => a.name === 'Status' && a.value.toString().includes('Desenvolvimento'))
+  ).length;
+  const earliestYear = experiences
+    .map(e => parseInt(e.startDate.replace(/[^0-9]/g, ''))) // extrai números
+    .filter(n => !isNaN(n))
+    .reduce((min, y) => y < min ? y : min, new Date().getFullYear());
+  const yearsOfExperience = new Date().getFullYear() - earliestYear;
+
   const stats = [
-    { icon: FiCode, number: '4+', label: 'Produtos em Produção' },
-    { icon: FiLayers, number: '2', label: 'Anos de Experiência' },
-    { icon: FiUsers, number: '3+', label: 'Clientes Ativos' },
-    { icon: FiTrendingUp, number: '99%', label: 'Uptime' },
+    { icon: FiCode, number: productionProjects.toString(), label: 'Produtos em Produção' },
+    { icon: FiLayers, number: yearsOfExperience.toString(), label: 'Anos de Experiência' },
+    { icon: FiTrendingUp, number: developmentProjects.toString(), label: 'Em Desenvolvimento' },
+    { icon: FiZap, number: 'API / Bluetooth', label: 'Integrações' },
   ];
 
   return (
@@ -48,7 +61,7 @@ const AboutSection = () => {
               para saúde respiratória.
             </p>
             <p className="text-gray-600 dark:text-gray-300 mb-6">
-              <span className="font-semibold text-primary-500">Experiência Profissional:</span> Com 2 anos de experiência 
+              <span className="font-semibold text-primary-500">Experiência Profissional:</span> Com {yearsOfExperience} anos de experiência 
               em desenvolvimento de software, já atuei como monitor de informática e tenho sólida experiência em infraestrutura 
               de TI, incluindo manutenção de computadores e redes. Essa bagagem me dá uma visão completa do ciclo de desenvolvimento, 
               desde a infraestrutura até o produto final.
@@ -75,7 +88,7 @@ const AboutSection = () => {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
-            className="grid grid-cols-2 gap-6"
+            className="grid grid-cols-1 sm:grid-cols-2 gap-6"
           >
             {stats.map((stat, index) => (
               <motion.div
@@ -84,13 +97,13 @@ const AboutSection = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.8, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="text-center p-6 bg-gray-50 dark:bg-gray-700 rounded-xl"
+                className="text-center p-5 bg-gray-50 dark:bg-gray-700 rounded-xl"
               >
-                <stat.icon className="w-8 h-8 text-primary-500 mx-auto mb-4" />
-                <div className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
+                <stat.icon className="w-6 h-6 text-primary-500 mx-auto mb-3" />
+                <div className="text-2xl font-bold text-gray-900 dark:text-white mb-1">
                   {stat.number}
                 </div>
-                <div className="text-gray-600 dark:text-gray-300 text-sm">
+                <div className="text-gray-600 dark:text-gray-300 text-xs">
                   {stat.label}
                 </div>
               </motion.div>

@@ -17,7 +17,7 @@ const SimpleMenu = () => {
   const navigation = [
     { name: 'Sobre', href: '/#about' },
     { name: 'Projetos', href: '/#works' },
-    { name: 'CV', href: '/cv' },
+    // { name: 'CV', href: '/cv' }, // Temporariamente oculto até adicionar conteúdo
     { name: 'Contato', href: '/#contact' },
   ];
 

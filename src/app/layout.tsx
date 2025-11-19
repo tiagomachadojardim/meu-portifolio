@@ -54,7 +54,7 @@ export default function RootLayout({
                 },
                 sameAs: [
                   'https://github.com/tiagomachadojardim',
-                  'https://linkedin.com/in/tiago-jardim'
+                  'https://www.linkedin.com/in/tiagojardim-tech'
                 ]
               })}
             </Script>

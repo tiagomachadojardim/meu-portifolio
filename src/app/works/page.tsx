@@ -4,7 +4,7 @@ import { works } from '@/data/works';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { FiExternalLink, FiArrowLeft, FiGithub } from 'react-icons/fi';
+import { FiArrowLeft } from 'react-icons/fi';
 
 export default function WorksPage() {
   return (
@@ -48,7 +48,7 @@ export default function WorksPage() {
                 transition={{ duration: 0.8, delay: index * 0.1 }}
                 className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
               >
-                <div className="relative group">
+                <div className="relative">
                   <Image
                     src={work.thumbnailUrl}
                     alt={work.title}
@@ -56,51 +56,46 @@ export default function WorksPage() {
                     height={250}
                     className="w-full h-48 object-cover"
                   />
-                  <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                    <div className="flex gap-4">
-                      <Link
-                        href={work.previewUrl}
-                        className="p-3 bg-white rounded-full hover:bg-gray-100 transition-colors"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        <FiExternalLink className="w-5 h-5 text-gray-800" />
-                      </Link>
-                      <Link
-                        href={`/works/${work.id}`}
-                        className="p-3 bg-primary-500 rounded-full hover:bg-primary-600 transition-colors"
-                      >
-                        <FiGithub className="w-5 h-5 text-white" />
-                      </Link>
-                    </div>
-                  </div>
                 </div>
                 
                 <div className="p-6">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="px-3 py-1 bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 text-sm font-medium rounded-full">
-                      {work.category}
-                    </span>
-                    <span className="text-sm text-gray-500 dark:text-gray-400">
-                      {work.publishedAt}
-                    </span>
-                  </div>
-                  
-                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                     {work.title}
                   </h3>
                   
-                  <p className="text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
+                  <div className="flex items-center gap-2 mb-4">
+                    {work.attributes.find(attr => attr.name === 'Status')?.value.toString().includes('Produção') ? (
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200">
+                        <span className="w-2 h-2 bg-green-500 rounded-full mr-1.5"></span>
+                        Em Produção
+                      </span>
+                    ) : work.attributes.find(attr => attr.name === 'Status')?.value.toString().includes('Publicado') ? (
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200">
+                        <span className="w-2 h-2 bg-blue-500 rounded-full mr-1.5"></span>
+                        Publicado
+                      </span>
+                    ) : (
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200">
+                        <span className="w-2 h-2 bg-yellow-500 rounded-full mr-1.5"></span>
+                        Em Desenvolvimento
+                      </span>
+                    )}
+                    <span className="px-2.5 py-1 bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 text-xs font-medium rounded-full">
+                      {work.category}
+                    </span>
+                  </div>
+                  
+                  <p className="text-gray-600 dark:text-gray-300 mb-4 text-sm">
                     {work.description}
                   </p>
                   
-                  <Link
-                    href={`/works/${work.id}`}
-                    className="inline-flex items-center text-primary-500 hover:text-primary-600 font-medium transition-colors"
-                  >
-                    Ver Detalhes
-                    <FiExternalLink className="w-4 h-4 ml-2" />
-                  </Link>
+                  <div className="flex flex-wrap gap-2">
+                    {work.attributes.find(attr => attr.name === 'Tecnologias')?.value.toString().split(',').map((tech, idx) => (
+                      <span key={idx} className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs rounded">
+                        {tech.trim()}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </motion.div>
             ))}

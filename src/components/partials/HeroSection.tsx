@@ -26,7 +26,7 @@ const HeroSection = () => {
     <div className="hero relative -mt-16 flex items-center justify-center px-4">
       <div className="flex flex-col items-center max-w-4xl">
         <div className="overflow-hidden rounded-full border-4 border-primary-500/20 shadow-xl">
-          <Image src="/images/avatar/man.png" width={180} height={180} alt="Tiago Jardim" />
+          <Image src="/images/avatar/avatar.png" width={180} height={180} alt="Tiago Jardim" />
         </div>
         <h1 className="mt-6 text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white text-center">
           Tiago Jardim
@@ -49,7 +49,7 @@ const HeroSection = () => {
             <FiGithub size={24} />
           </Link>
           <Link 
-            href="https://linkedin.com/in/tiago-jardim" 
+            href="https://www.linkedin.com/in/tiagojardim-tech" 
             target="_blank"
             className="text-gray-700 dark:text-gray-300 transition-all duration-150 hover:text-primary-500 hover:scale-110"
             aria-label="LinkedIn"

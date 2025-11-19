@@ -1,77 +1,65 @@
 'use client';
 
-import React, { useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
-import { FiMail, FiPhone, FiMapPin, FiSend, FiUser, FiMessageSquare } from 'react-icons/fi';
-import Input from '@/components/form/Input';
-import Textarea from '@/components/form/Textarea';
-import Button from '@/components/form/Button';
+import Link from 'next/link';
+import { FiMail, FiGithub, FiLinkedin, FiGlobe } from 'react-icons/fi';
+import { SiWhatsapp, SiInstagram } from 'react-icons/si';
 
 const ContactSection = () => {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: ''
-  });
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    });
-  };
-
-  const [submitting, setSubmitting] = useState(false);
-  const [feedback, setFeedback] = useState<string | null>(null);
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitting(true);
-    setFeedback(null);
-    try {
-      const res = await fetch('/api/contact', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
-      });
-      const json = await res.json();
-      if (res.ok) {
-        setFeedback(json.message || 'Mensagem enviada com sucesso!');
-        setFormData({ name: '', email: '', subject: '', message: '' });
-      } else {
-        setFeedback(json.error || 'Não foi possível enviar sua mensagem.');
-      }
-    } catch (error) {
-      setFeedback('Erro ao enviar. Tente novamente mais tarde.');
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
   const contactInfo = [
     {
       icon: FiMail,
       title: 'Email',
+      description: 'Envie um email direto',
       value: 'tiagomachadojardim@gmail.com',
-      link: 'mailto:tiagomachadojardim@gmail.com'
+      link: 'mailto:tiagomachadojardim@gmail.com',
+      color: 'from-red-500 to-pink-500'
     },
     {
-      icon: FiPhone,
+      icon: SiWhatsapp,
       title: 'WhatsApp',
+      description: 'Fale comigo agora',
       value: '(53) 99705-4143',
-      link: 'https://wa.me/5553997054143?text=Ol%C3%A1%20Tiago%2C%20gostaria%20de%20conversar%20sobre%20um%20projeto.'
+      link: 'https://wa.me/5553997054143?text=Ol%C3%A1%20Tiago%2C%20vim%20pelo%20seu%20portf%C3%B3lio%20e%20gostaria%20de%20conversar.',
+      color: 'from-green-500 to-emerald-500'
     },
     {
-      icon: FiMapPin,
-      title: 'Localização',
-      value: 'Bagé - RS, Brasil',
-      link: '#'
+      icon: FiGithub,
+      title: 'GitHub',
+      description: 'Veja meus repositórios',
+      value: '@tiagomachadojardim',
+      link: 'https://github.com/tiagomachadojardim',
+      color: 'from-gray-700 to-gray-900'
+    },
+    {
+      icon: FiLinkedin,
+      title: 'LinkedIn',
+      description: 'Conecte-se profissionalmente',
+      value: '/in/tiagojardim-tech',
+      link: 'https://www.linkedin.com/in/tiagojardim-tech',
+      color: 'from-blue-600 to-blue-800'
+    },
+    {
+      icon: SiInstagram,
+      title: 'Instagram',
+      description: 'Acompanhe meu dia a dia',
+      value: '@tiago.machado.jardim',
+      link: 'https://instagram.com/tiago.machado.jardim',
+      color: 'from-pink-500 to-purple-600'
+    },
+    {
+      icon: FiGlobe,
+      title: 'Bientech',
+      description: 'Conheça minha startup',
+      value: 'bientech.com.br',
+      link: 'https://bientech.com.br',
+      color: 'from-purple-500 to-indigo-600'
     }
   ];
 
   return (
-    <section id="contact" className="py-20 bg-gray-50 dark:bg-gray-900">
+    <section id="contact" className="py-20 bg-white dark:bg-gray-800">
       <div className="container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -80,128 +68,59 @@ const ContactSection = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
-            Entre em <span className="text-primary-500">Contato</span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+            Vamos <span className="text-primary-500">Conversar</span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Vamos conversar sobre seu próximo projeto. Estou sempre disponível para discutir novas oportunidades.
+          <p className="text-base md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto px-4">
+            Escolha o melhor canal para entrar em contato. Estou sempre disponível para discutir novos projetos e oportunidades.
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12">
-          {/* Informações de Contato */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8">
-              Vamos conversar
-            </h3>
-            <p className="text-gray-600 dark:text-gray-300 mb-8">
-              Estou sempre interessado em novos projetos e oportunidades. 
-              Se você tem uma ideia ou precisa de ajuda com seu projeto, 
-              não hesite em entrar em contato!
-            </p>
-
-            <div className="space-y-6">
-              {contactInfo.map((info, index) => (
-                <motion.div
-                  key={info.title}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.8, delay: index * 0.1 }}
-                  viewport={{ once: true }}
-                  className="flex items-center"
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          {contactInfo.map((info, index) => {
+            const Icon = info.icon;
+            return (
+              <motion.div
+                key={info.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <Link
+                  href={info.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group block h-full"
                 >
-                  <div className="w-12 h-12 bg-primary-100 dark:bg-primary-900 rounded-lg flex items-center justify-center mr-4">
-                    <info.icon className="w-6 h-6 text-primary-600 dark:text-primary-400" />
-                  </div>
-                  <div>
-                    <h4 className="font-semibold text-gray-900 dark:text-white">
+                  <div className="relative bg-gray-50 dark:bg-gray-700 rounded-2xl p-6 border border-gray-200 dark:border-gray-600 hover:border-primary-500 transition-all duration-300 hover:transform hover:scale-105 h-full">
+                    {/* Gradient Background on Hover */}
+                    <div className={`absolute inset-0 bg-gradient-to-br ${info.color} opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity duration-300`} />
+                    
+                    {/* Icon */}
+                    <div className={`inline-flex p-4 bg-gradient-to-br ${info.color} rounded-xl mb-4 relative`}>
+                      <Icon className="w-6 h-6 text-white" />
+                    </div>
+                    
+                    {/* Title */}
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
                       {info.title}
-                    </h4>
-                    <a
-                      href={info.link}
-                      className="text-gray-600 dark:text-gray-300 hover:text-primary-500 transition-colors"
-                    >
+                    </h3>
+                    
+                    {/* Description */}
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
+                      {info.description}
+                    </p>
+                    
+                    {/* Value */}
+                    <p className="text-sm font-medium text-primary-500 group-hover:text-primary-600 transition-colors">
                       {info.value}
-                    </a>
+                    </p>
                   </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Formulário de Contato */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            viewport={{ once: true }}
-          >
-            <form onSubmit={handleSubmit} className="space-y-6" aria-labelledby="form-title">
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="name" className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2"><FiUser /> Nome</label>
-                  <Input
-                    id="name"
-                    placeholder="Seu nome completo"
-                    name="name"
-                    value={formData.name}
-                    onChange={(e) => handleChange(e)}
-                    required
-                  />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <label htmlFor="email" className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2"><FiMail /> Email</label>
-                  <Input
-                    id="email"
-                    placeholder="seu@email.com"
-                    name="email"
-                    type="email"
-                    value={formData.email}
-                    onChange={(e) => handleChange(e)}
-                    required
-                  />
-                </div>
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label htmlFor="subject" className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2"><FiMessageSquare /> Assunto</label>
-                <Input
-                  id="subject"
-                  placeholder="Ex.: Desenvolvimento de aplicativo de saúde"
-                  name="subject"
-                  value={formData.subject}
-                  onChange={(e) => handleChange(e)}
-                  required
-                />
-              </div>
-
-              <div className="flex flex-col gap-2">
-                <label htmlFor="message" className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2"><FiSend /> Mensagem</label>
-                <Textarea
-                  id="message"
-                  placeholder="Descreva brevemente sua necessidade, prazo e qualquer detalhe relevante."
-                  name="message"
-                  value={formData.message}
-                  onChange={(e) => handleChange(e)}
-                  rows={6}
-                  required
-                />
-              </div>
-
-              {feedback && (
-                <div className="mb-2 text-sm text-center text-gray-600 dark:text-gray-300">{feedback}</div>
-              )}
-              <Button type="submit" className="w-full" disabled={submitting as any}>
-                <FiSend className="w-5 h-5 mr-2" />
-                {submitting ? 'Enviando...' : 'Enviar Mensagem'}
-              </Button>
-            </form>
-          </motion.div>
+                </Link>
+              </motion.div>
+            );
+          })}
         </div>
       </div>
     </section>

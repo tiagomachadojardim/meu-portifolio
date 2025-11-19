@@ -19,9 +19,7 @@ export default function Home() {
       <section className="container py-16">
         <ServicesSection />
       </section>
-      <section className="container py-16" id="contact">
-        <ContactSection />
-      </section>
+      <ContactSection />
     </>
   );
 }

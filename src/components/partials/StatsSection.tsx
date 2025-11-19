@@ -2,51 +2,65 @@
 
 import React from 'react';
 import { motion } from 'framer-motion';
-import { FiUsers, FiActivity, FiTrendingUp, FiAward, FiGlobe, FiCheck } from 'react-icons/fi';
+import { FiUsers, FiActivity, FiTrendingUp, FiAward, FiCode, FiZap } from 'react-icons/fi';
+import { works } from '@/data/works';
+import { experiences } from '@/data/experiences';
 
 const StatsSection = () => {
+  const productionProjects = works.filter(w =>
+    w.attributes.some(a => a.name === 'Status' && a.value.toString().includes('Produção'))
+  ).length;
+  const developmentProjects = works.filter(w =>
+    w.attributes.some(a => a.name === 'Status' && a.value.toString().includes('Desenvolvimento'))
+  ).length;
+  const earliestYear = experiences
+    .map(e => parseInt(e.startDate.replace(/[^0-9]/g, ''))) // extrai números
+    .filter(n => !isNaN(n))
+    .reduce((min, y) => y < min ? y : min, new Date().getFullYear());
+  const yearsOfExperience = new Date().getFullYear() - earliestYear;
+
   const stats = [
     {
-      icon: FiUsers,
-      number: '3',
-      label: 'Clientes Ativos',
-      description: 'Utilizando o PulmoScan Platform',
-      color: 'from-blue-500 to-cyan-500'
-    },
-    {
-      icon: FiGlobe,
-      number: '5',
-      label: 'Produtos',
-      description: 'Entre produção e desenvolvimento',
-      color: 'from-purple-500 to-pink-500'
-    },
-    {
-      icon: FiCheck,
-      number: '3',
-      label: 'Em Produção',
-      description: 'Aplicações rodando ativamente',
+      icon: FiActivity,
+      number: productionProjects.toString(),
+      label: 'Projetos em Produção',
+      description: 'Aplicações SaaS e Apps ativos',
       color: 'from-green-500 to-teal-500'
     },
     {
-      icon: FiActivity,
-      number: '99%',
-      label: 'Uptime',
-      description: 'Disponibilidade dos serviços',
-      color: 'from-orange-500 to-red-500'
+      icon: FiCode,
+      number: developmentProjects.toString(),
+      label: 'Em Desenvolvimento',
+      description: 'Funcionalidades & novas plataformas',
+      color: 'from-blue-500 to-cyan-500'
     },
     {
       icon: FiTrendingUp,
-      number: '2',
-      label: 'Anos',
-      description: 'De experiência em desenvolvimento',
+      number: yearsOfExperience.toString(),
+      label: 'Anos de Experiência',
+      description: 'Construindo soluções digitais completas',
       color: 'from-indigo-500 to-purple-500'
+    },
+    {
+      icon: FiUsers,
+      number: 'Multi-tenant',
+      label: 'Arquitetura',
+      description: 'Plataformas escaláveis para múltiplos clientes',
+      color: 'from-pink-500 to-rose-500'
     },
     {
       icon: FiAward,
       number: '100%',
       label: 'Dedicação',
-      description: 'Comprometimento com qualidade',
+      description: 'Foco diário em qualidade e evolução',
       color: 'from-yellow-500 to-orange-500'
+    },
+    {
+      icon: FiZap,
+      number: 'API / Bluetooth',
+      label: 'Integrações',
+      description: 'Apps conectados a dispositivos e serviços',
+      color: 'from-purple-500 to-pink-600'
     },
   ];
 
@@ -59,7 +73,7 @@ const StatsSection = () => {
         }} />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 relative">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -71,10 +85,10 @@ const StatsSection = () => {
             <span className="text-primary-400 font-semibold text-sm">📊 MÉTRICAS & IMPACTO</span>
           </div>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6">
-            Números que <span className="text-primary-500">Falam por Si</span>
+            Indicadores <span className="text-primary-500">Profissionais</span>
           </h2>
           <p className="text-base md:text-lg text-gray-300 max-w-3xl mx-auto px-4">
-            O impacto real dos nossos produtos em números, mostrando o crescimento e a confiança dos usuários
+            Uma visão resumida do estágio atual dos projetos, experiência acumulada e foco diário nas entregas.
           </p>
         </motion.div>
 
@@ -90,27 +104,27 @@ const StatsSection = () => {
                 viewport={{ once: true }}
                 className="group relative"
               >
-                <div className="relative bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700 hover:border-primary-500 transition-all duration-300 hover:transform hover:scale-105">
+                <div className="relative bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700 hover:border-primary-500 transition-all duration-300 hover:transform hover:scale-105">
                   {/* Gradient Background on Hover */}
                   <div className={`absolute inset-0 bg-gradient-to-br ${stat.color} opacity-0 group-hover:opacity-10 rounded-2xl transition-opacity duration-300`} />
                   
                   {/* Icon */}
-                  <div className={`inline-flex p-4 bg-gradient-to-br ${stat.color} rounded-xl mb-4 relative`}>
-                    <Icon className="w-6 h-6 text-white" />
+                  <div className={`inline-flex p-3 bg-gradient-to-br ${stat.color} rounded-xl mb-3 relative`}>
+                    <Icon className="w-5 h-5 text-white" />
                   </div>
                   
                   {/* Number */}
-                  <div className="text-4xl md:text-5xl font-bold mb-2 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
+                  <div className="text-3xl md:text-4xl font-bold mb-2 bg-gradient-to-r from-white to-gray-300 bg-clip-text text-transparent">
                     {stat.number}
                   </div>
                   
                   {/* Label */}
-                  <div className="text-xl font-semibold text-white mb-2">
+                  <div className="text-lg font-semibold text-white mb-1">
                     {stat.label}
                   </div>
                   
                   {/* Description */}
-                  <p className="text-sm text-gray-400 leading-relaxed">
+                  <p className="text-xs text-gray-400 leading-relaxed">
                     {stat.description}
                   </p>
                 </div>
