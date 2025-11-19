@@ -59,28 +59,7 @@ const ServicesSection = () => {
           })}
         </div>
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mt-16"
-        >
-          <div className="bg-gradient-to-r from-primary-500 to-primary-600 rounded-2xl p-8 text-white">
-            <h3 className="text-2xl font-bold mb-4">
-              Pronto para começar seu próximo projeto?
-            </h3>
-            <p className="text-primary-100 mb-6 max-w-2xl mx-auto">
-              Vamos conversar sobre como posso ajudar a transformar suas ideias em soluções digitais incríveis.
-            </p>
-            <a
-              href="#contact"
-              className="inline-flex items-center px-8 py-3 bg-white text-primary-600 rounded-lg hover:bg-gray-100 transition-colors font-medium"
-            >
-              Vamos Conversar
-            </a>
-          </div>
-        </motion.div>
+        {/* CTA final removida conforme solicitação */}
       </div>
     </section>
   );

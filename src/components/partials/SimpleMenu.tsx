@@ -15,16 +15,17 @@ const SimpleMenu = () => {
   const { theme, toggleTheme } = useTheme();
 
   const navigation = [
-    { name: 'Works', href: '/works' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'Contact', href: '/contact' },
+    { name: 'Sobre', href: '/#about' },
+    { name: 'Projetos', href: '/#works' },
+    { name: 'CV', href: '/cv' },
+    { name: 'Contato', href: '/#contact' },
   ];
 
   return (
     <header className="header text-gray-700 dark:text-gray-200">
       <div className="mx-auto flex h-16 max-w-7xl items-center px-4 md:px-6">
         <Link href="/" className="text-3xl font-bold">
-          <span>Meu Portfólio</span>
+          <span>Tiago Jardim</span>
           <span className="text-primary-500">.</span>
         </Link>
         
@@ -109,7 +110,7 @@ const SimpleMenu = () => {
               <div className="flex h-full flex-col overflow-y-auto">
                 <div className="border-b px-2 pb-4 dark:border-gray-700">
                   <Link href="/" className="text-3xl font-bold">
-                    <span>Meu Portfólio</span>
+                    <span>Tiago Jardim</span>
                     <span className="text-primary-500">.</span>
                   </Link>
                 </div>

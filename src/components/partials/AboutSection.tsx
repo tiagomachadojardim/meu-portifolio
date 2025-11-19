@@ -7,10 +7,10 @@ import { experiences } from '@/data/experiences';
 
 const AboutSection = () => {
   const stats = [
-    { icon: FiCode, number: '50+', label: 'Projetos Concluídos' },
-    { icon: FiLayers, number: '3+', label: 'Anos de Experiência' },
-    { icon: FiUsers, number: '20+', label: 'Clientes Satisfeitos' },
-    { icon: FiTrendingUp, number: '100%', label: 'Taxa de Sucesso' },
+    { icon: FiCode, number: '4+', label: 'Produtos em Produção' },
+    { icon: FiLayers, number: '2', label: 'Anos de Experiência' },
+    { icon: FiUsers, number: '3+', label: 'Clientes Ativos' },
+    { icon: FiTrendingUp, number: '99%', label: 'Uptime' },
   ];
 
   return (
@@ -23,11 +23,11 @@ const AboutSection = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-6">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-6">
             Sobre <span className="text-primary-500">Mim</span>
           </h2>
-          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-            Desenvolvedor Full Stack apaixonado por criar soluções digitais inovadoras que fazem a diferença.
+          <p className="text-base md:text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto px-4">
+            Fundador da Bientech, desenvolvedor full stack apaixonado por transformar ideias em produtos digitais que impactam vidas.
           </p>
         </motion.div>
 
@@ -38,20 +38,28 @@ const AboutSection = () => {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <h3 className="text-3xl font-bold text-gray-900 dark:text-white mb-6">
-              Minha História
+            <h3 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-6">
+              Minha Jornada
             </h3>
             <p className="text-gray-600 dark:text-gray-300 mb-6">
-              Comecei minha jornada na programação há mais de 3 anos e desde então tenho me dedicado 
-              a criar experiências digitais excepcionais. Especializado em desenvolvimento web e mobile, 
-              sempre busco aprender novas tecnologias e aplicar as melhores práticas do mercado.
+              <span className="font-semibold text-primary-500">Formação Acadêmica:</span> Graduado em Análise e Desenvolvimento 
+              de Sistemas e atualmente cursando Engenharia de Computação. Minha paixão por tecnologia me levou a fundar 
+              a <span className="font-semibold text-primary-500">Bientech</span>, uma startup focada em soluções inovadoras 
+              para saúde respiratória.
             </p>
             <p className="text-gray-600 dark:text-gray-300 mb-6">
-              Acredito que a tecnologia deve ser acessível e intuitiva. Meu objetivo é transformar 
-              ideias complexas em soluções simples e elegantes que realmente agregam valor aos usuários.
+              <span className="font-semibold text-primary-500">Experiência Profissional:</span> Com 2 anos de experiência 
+              em desenvolvimento de software, já atuei como monitor de informática e tenho sólida experiência em infraestrutura 
+              de TI, incluindo manutenção de computadores e redes. Essa bagagem me dá uma visão completa do ciclo de desenvolvimento, 
+              desde a infraestrutura até o produto final.
+            </p>
+            <p className="text-gray-600 dark:text-gray-300 mb-6">
+              Desenvolvo soluções completas para <span className="font-semibold">web e mobile (Android)</span>, utilizando 
+              tecnologias modernas. Atualmente, mantenho múltiplos produtos em produção servindo clientes reais, sempre focando 
+              em qualidade, performance e experiência do usuário.
             </p>
             <div className="flex flex-wrap gap-4">
-              {['JavaScript', 'TypeScript', 'React', 'Next.js', 'Node.js', 'Python'].map((tech) => (
+              {['Next.js', 'React', 'Laravel', 'Flutter', 'TypeScript', 'PostgreSQL', 'Firebase', 'Tailwind'].map((tech) => (
                 <span
                   key={tech}
                   className="px-4 py-2 bg-primary-100 dark:bg-primary-900 text-primary-800 dark:text-primary-200 rounded-full text-sm font-medium"

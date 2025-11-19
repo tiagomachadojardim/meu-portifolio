@@ -79,12 +79,6 @@ const WorksSection = () => {
                     >
                       <FiExternalLink className="w-5 h-5 text-gray-800" />
                     </Link>
-                    <Link
-                      href={`/works/${work.id}`}
-                      className="p-3 bg-primary-500 rounded-full hover:bg-primary-600 transition-colors"
-                    >
-                      <FiEye className="w-5 h-5 text-white" />
-                    </Link>
                   </div>
                 </div>
               </div>
@@ -108,10 +102,12 @@ const WorksSection = () => {
                 </p>
                 
                 <Link
-                  href={`/works/${work.id}`}
+                  href={work.previewUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center text-primary-500 hover:text-primary-600 font-medium transition-colors"
                 >
-                  Ver Detalhes
+                  Ver Projeto
                   <FiExternalLink className="w-4 h-4 ml-2" />
                 </Link>
               </div>
@@ -131,21 +127,7 @@ const WorksSection = () => {
           </motion.div>
         )}
 
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mt-12"
-        >
-          <Link
-            href="/works"
-            className="inline-flex items-center px-8 py-3 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors font-medium"
-          >
-            Ver Todos os Projetos
-            <FiExternalLink className="w-5 h-5 ml-2" />
-          </Link>
-        </motion.div>
+        
       </div>
     </section>
   );

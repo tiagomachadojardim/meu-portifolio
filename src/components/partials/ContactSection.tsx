@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FiMail, FiPhone, FiMapPin, FiSend } from 'react-icons/fi';
+import { FiMail, FiPhone, FiMapPin, FiSend, FiUser, FiMessageSquare } from 'react-icons/fi';
 import Input from '@/components/form/Input';
 import Textarea from '@/components/form/Textarea';
 import Button from '@/components/form/Button';
@@ -22,31 +22,50 @@ const ContactSection = () => {
     });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [submitting, setSubmitting] = useState(false);
+  const [feedback, setFeedback] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Aqui você pode adicionar a lógica para enviar o formulário
-    console.log('Form submitted:', formData);
-    alert('Mensagem enviada com sucesso!');
-    setFormData({ name: '', email: '', subject: '', message: '' });
+    setSubmitting(true);
+    setFeedback(null);
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      const json = await res.json();
+      if (res.ok) {
+        setFeedback(json.message || 'Mensagem enviada com sucesso!');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        setFeedback(json.error || 'Não foi possível enviar sua mensagem.');
+      }
+    } catch (error) {
+      setFeedback('Erro ao enviar. Tente novamente mais tarde.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const contactInfo = [
     {
       icon: FiMail,
       title: 'Email',
-      value: 'tiago@exemplo.com',
-      link: 'mailto:tiago@exemplo.com'
+      value: 'tiagomachadojardim@gmail.com',
+      link: 'mailto:tiagomachadojardim@gmail.com'
     },
     {
       icon: FiPhone,
-      title: 'Telefone',
-      value: '+55 (11) 99999-9999',
-      link: 'tel:+5511999999999'
+      title: 'WhatsApp',
+      value: '(53) 99705-4143',
+      link: 'https://wa.me/5553997054143?text=Ol%C3%A1%20Tiago%2C%20gostaria%20de%20conversar%20sobre%20um%20projeto.'
     },
     {
       icon: FiMapPin,
       title: 'Localização',
-      value: 'São Paulo, SP - Brasil',
+      value: 'Bagé - RS, Brasil',
       link: '#'
     }
   ];
@@ -122,45 +141,64 @@ const ContactSection = () => {
             transition={{ duration: 0.8 }}
             viewport={{ once: true }}
           >
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form onSubmit={handleSubmit} className="space-y-6" aria-labelledby="form-title">
               <div className="grid md:grid-cols-2 gap-6">
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="name" className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2"><FiUser /> Nome</label>
+                  <Input
+                    id="name"
+                    placeholder="Seu nome completo"
+                    name="name"
+                    value={formData.name}
+                    onChange={(e) => handleChange(e)}
+                    required
+                  />
+                </div>
+                <div className="flex flex-col gap-2">
+                  <label htmlFor="email" className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2"><FiMail /> Email</label>
+                  <Input
+                    id="email"
+                    placeholder="seu@email.com"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={(e) => handleChange(e)}
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="flex flex-col gap-2">
+                <label htmlFor="subject" className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2"><FiMessageSquare /> Assunto</label>
                 <Input
-                  label="Nome"
-                  name="name"
-                  value={formData.name}
-                  onChange={handleChange}
-                  required
-                />
-                <Input
-                  label="Email"
-                  name="email"
-                  type="email"
-                  value={formData.email}
-                  onChange={handleChange}
+                  id="subject"
+                  placeholder="Ex.: Desenvolvimento de aplicativo de saúde"
+                  name="subject"
+                  value={formData.subject}
+                  onChange={(e) => handleChange(e)}
                   required
                 />
               </div>
 
-              <Input
-                label="Assunto"
-                name="subject"
-                value={formData.subject}
-                onChange={handleChange}
-                required
-              />
+              <div className="flex flex-col gap-2">
+                <label htmlFor="message" className="text-sm font-semibold text-gray-700 dark:text-gray-300 flex items-center gap-2"><FiSend /> Mensagem</label>
+                <Textarea
+                  id="message"
+                  placeholder="Descreva brevemente sua necessidade, prazo e qualquer detalhe relevante."
+                  name="message"
+                  value={formData.message}
+                  onChange={(e) => handleChange(e)}
+                  rows={6}
+                  required
+                />
+              </div>
 
-              <Textarea
-                label="Mensagem"
-                name="message"
-                value={formData.message}
-                onChange={handleChange}
-                rows={6}
-                required
-              />
-
-              <Button type="submit" size="lg" className="w-full">
+              {feedback && (
+                <div className="mb-2 text-sm text-center text-gray-600 dark:text-gray-300">{feedback}</div>
+              )}
+              <Button type="submit" className="w-full" disabled={submitting as any}>
                 <FiSend className="w-5 h-5 mr-2" />
-                Enviar Mensagem
+                {submitting ? 'Enviando...' : 'Enviar Mensagem'}
               </Button>
             </form>
           </motion.div>
