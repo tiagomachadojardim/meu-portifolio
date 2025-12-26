@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { FiArrowLeft } from 'react-icons/fi';
+import ImageCarousel from '@/components/ui/ImageCarousel';
 
 export default function WorksPage() {
   return (
@@ -48,15 +49,10 @@ export default function WorksPage() {
                 transition={{ duration: 0.8, delay: index * 0.1 }}
                 className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
               >
-                <div className="relative">
-                  <Image
-                    src={work.thumbnailUrl}
-                    alt={work.title}
-                    width={400}
-                    height={250}
-                    className="w-full h-48 object-cover"
-                  />
-                </div>
+                <ImageCarousel 
+                  images={work.images.length > 0 ? work.images : [work.thumbnailUrl]}
+                  alt={work.title}
+                />
                 
                 <div className="p-6">
                   <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">

@@ -4,8 +4,43 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { works } from '@/data/works';
 import Image from 'next/image';
+import ImageCarousel from '@/components/ui/ImageCarousel';
+import { 
+  SiReact, SiNextdotjs, SiTypescript, SiJavascript, SiTailwindcss, SiVite, SiAxios, SiNodedotjs,
+  SiLaravel, SiPhp, SiPostgresql, SiFlutter, SiDart, SiBluetooth
+} from 'react-icons/si';
+import { FaFire } from 'react-icons/fa';
+import { FiZap } from 'react-icons/fi';
 
 const LiveProjectsSection = () => {
+  const techIconMap: Record<string, React.ComponentType<{ className?: string }>> = {
+    'react': SiReact,
+    'nextjs': SiNextdotjs,
+    'next.js': SiNextdotjs,
+    'typescript': SiTypescript,
+    'javascript': SiJavascript,
+    'tailwind': SiTailwindcss,
+    'tailwindcss': SiTailwindcss,
+    'vite': SiVite,
+    'axios': SiAxios,
+    'node': SiNodedotjs,
+    'node.js': SiNodedotjs,
+    'laravel': SiLaravel,
+    'php': SiPhp,
+    'postgresql': SiPostgresql,
+    'flutter': SiFlutter,
+    'dart': SiDart,
+    'bluetooth': SiBluetooth,
+    'flame': FaFire,
+    'api': FiZap,
+    'api rest': FiZap,
+    'rest': FiZap,
+  };
+
+  const getTechIcon = (name: string) => {
+    const key = name.trim().toLowerCase();
+    return techIconMap[key] || undefined;
+  };
   return (
     <section id="works" className="py-20 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
       <div className="container mx-auto px-4">
@@ -34,15 +69,10 @@ const LiveProjectsSection = () => {
               viewport={{ once: true }}
               className="bg-white dark:bg-gray-800 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300"
             >
-              <div className="relative">
-                <Image
-                  src={work.thumbnailUrl}
-                  alt={work.title}
-                  width={400}
-                  height={250}
-                  className="w-full h-48 object-cover"
-                />
-              </div>
+              <ImageCarousel 
+                images={work.images.length > 0 ? work.images : [work.thumbnailUrl]}
+                alt={work.title}
+              />
               
               <div className="p-6">
                 <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">
@@ -76,11 +106,15 @@ const LiveProjectsSection = () => {
                 </p>
                 
                 <div className="flex flex-wrap gap-2">
-                  {work.attributes.find(attr => attr.name === 'Tecnologias')?.value.toString().split(',').map((tech, idx) => (
-                    <span key={idx} className="px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs rounded">
-                      {tech.trim()}
-                    </span>
-                  ))}
+                  {work.attributes.find(attr => attr.name === 'Tecnologias')?.value.toString().split(',').map((tech, idx) => {
+                    const Icon = getTechIcon(tech);
+                    return (
+                      <span key={idx} className="inline-flex items-center gap-1 px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-xs rounded">
+                        {Icon && <Icon className="w-3.5 h-3.5" />}
+                        {tech.trim()}
+                      </span>
+                    );
+                  })}
                 </div>
               </div>
             </motion.div>
