@@ -35,7 +35,7 @@ export default function CVPage() {
           <ol className="list-decimal pl-6 space-y-2 text-gray-700 dark:text-gray-300">
             <li>Crie a pasta <code className="px-1 rounded bg-gray-100 dark:bg-gray-700">public/cv</code> se ainda não existir.</li>
             <li>Coloque seu arquivo PDF com o nome <strong>TiagoJardim-CV.pdf</strong>.</li>
-            <li>Acesse novamente esta página e clique em "Baixar PDF".</li>
+            <li>Acesse novamente esta página e clique em &quot;Baixar PDF&quot;.</li>
           </ol>
           <p className="mt-4">Se preferir outro nome de arquivo, atualize o caminho no código desta página.</p>
         </div>

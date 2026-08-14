@@ -7,11 +7,51 @@ export type Experience = {
 };
 
 export type Education = {
-  school: string;
+  id: number;
   degree: string;
+  school: string;
   startDate: string;
   endDate: string;
-  description: string;
+  description?: string;
+  thesisTitle?: string;
+  advisor?: string;
+  researchGroup?: {
+    name: string;
+    url: string;
+  };
+};
+
+export type CourseCategory = 'bootcamp' | 'online';
+
+export type Course = {
+  id: number;
+  title: string;
+  institution: string;
+  category: CourseCategory;
+  completedAt: string;
+  workloadHours?: number;
+  description?: string;
+};
+
+export type PublicationType =
+  | 'tcc'
+  | 'conference-paper'
+  | 'extended-abstract'
+  | 'abstract';
+
+export type Publication = {
+  id: number;
+  title: string;
+  type: PublicationType;
+  authors: string;
+  event: string;
+  location?: string;
+  publisher?: string;
+  year: string;
+  pages?: string;
+  description?: string;
+  pdfUrl?: string;
+  externalUrl?: string;
 };
 
 export type Service = {
@@ -27,31 +67,12 @@ export type Work = {
   thumbnailUrl: string;
   description?: string;
   images: string[];
-  previewUrl: string;
+  previewUrl?: string;
   publishedAt: string;
   featureList: string[];
+  featured?: boolean;
   attributes: {
     name: string;
     value: string | number;
   }[];
-};
-
-export type Post = {
-  id: number;
-  title: string;
-  publishedAt: string;
-  thumbnailUrl: string;
-  imageUrl: string;
-  authorName: string;
-  content: string;
-};
-
-export type Review = {
-  author: {
-    name: string;
-    imageUrl: string;
-    designation: string;
-    company: string;
-  };
-  comment: string;
 };

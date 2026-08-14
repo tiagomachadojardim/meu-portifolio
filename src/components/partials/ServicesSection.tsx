@@ -39,7 +39,7 @@ const ServicesSection = () => {
                 viewport={{ once: true }}
                 className="group"
               >
-                <div className="bg-gray-50 dark:bg-gray-700 p-8 rounded-xl hover:bg-primary-50 dark:hover:bg-primary-900/20 transition-colors duration-300 h-full">
+                <div className="surface-card p-8 hover:border-primary-500 hover:shadow-lg transition-all duration-300 h-full">
                   <div className="flex flex-col items-center text-center">
                     <div className="w-16 h-16 bg-primary-100 dark:bg-primary-900 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary-200 dark:group-hover:bg-primary-800 transition-colors duration-300">
                       <IconComponent className="w-8 h-8 text-primary-600 dark:text-primary-400" />

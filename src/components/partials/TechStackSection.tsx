@@ -79,7 +79,7 @@ const TechStackSection = () => {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: categoryIndex * 0.1 }}
               viewport={{ once: true }}
-              className="bg-gray-50 dark:bg-gray-900 rounded-2xl p-6 border border-gray-200 dark:border-gray-700 hover:border-primary-500 transition-colors duration-300"
+              className="surface-card p-6 hover:border-primary-500 transition-colors duration-300"
             >
               <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-6 flex items-center">
                 <span className="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
@@ -95,7 +95,7 @@ const TechStackSection = () => {
                       whileInView={{ opacity: 1, scale: 1 }}
                       transition={{ duration: 0.3, delay: techIndex * 0.05 }}
                       viewport={{ once: true }}
-                      className="flex flex-col items-center p-4 bg-white dark:bg-gray-800 rounded-xl hover:shadow-lg transition-all duration-300 group"
+                      className="flex flex-col items-center p-4 surface-card hover:shadow-lg transition-all duration-300 group"
                     >
                       <Icon 
                         className={`text-4xl text-gray-700 dark:text-gray-300 transition-colors duration-300 ${tech.color}`} 

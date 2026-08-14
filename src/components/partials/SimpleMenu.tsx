@@ -15,10 +15,10 @@ const SimpleMenu = () => {
   const { theme, toggleTheme } = useTheme();
 
   const navigation = [
-    { name: 'Sobre', href: '/#about' },
-    { name: 'Projetos', href: '/#works' },
-    // { name: 'CV', href: '/cv' }, // Temporariamente oculto até adicionar conteúdo
-    { name: 'Contato', href: '/#contact' },
+    { name: 'Sobre', href: '/#about', match: (path: string) => path === '/' },
+    { name: 'Projetos', href: '/works', match: (path: string) => path === '/works' },
+    { name: 'Formação', href: '/formacao', match: (path: string) => path === '/formacao' },
+    { name: 'Publicações', href: '/publicacoes', match: (path: string) => path === '/publicacoes' },
   ];
 
   return (
@@ -37,7 +37,7 @@ const SimpleMenu = () => {
               className={classNames(
                 'px-4 py-2 font-semibold transition-colors duration-300 hover:text-primary-600 hover:underline',
                 {
-                  'text-primary-500': pathname === item.href,
+                  'text-primary-500': item.match(pathname),
                 }
               )}
             >
@@ -121,7 +121,7 @@ const SimpleMenu = () => {
                       href={item.href}
                       className={classNames(
                         'group flex items-center px-2 py-2 text-base font-medium transition-colors duration-150 hover:text-primary-600',
-                        { 'text-primary-500': pathname === item.href }
+                        { 'text-primary-500': item.match(pathname) }
                       )}
                       onClick={() => setSidebarOpen(false)}
                     >

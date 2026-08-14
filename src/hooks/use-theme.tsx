@@ -14,37 +14,32 @@ type ThemeContextType = {
 
 type ThemeProviderProps = {
   children: React.ReactNode;
-}
+};
 
 const ThemeContext = React.createContext<ThemeContextType | undefined>(undefined);
+
+function applyTheme(theme: Theme) {
+  document.documentElement.classList.toggle(Theme.DARK, theme === Theme.DARK);
+  localStorage.setItem('theme', theme);
+}
 
 const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
   const [theme, setTheme] = React.useState<Theme>(Theme.LIGHT);
 
-  const toggleTheme = () => {
-    if (theme === Theme.LIGHT) {
-      setTheme(Theme.DARK);
-      document.documentElement.classList.add(Theme.DARK);
-      localStorage.setItem('theme', Theme.DARK);
-    } else {
-      setTheme(Theme.LIGHT);
-      document.documentElement.classList.remove(Theme.DARK);
-      localStorage.setItem('theme', Theme.LIGHT);
-    }
-  };
-
   useEffect(() => {
-    const localTheme = localStorage.getItem('theme');
-    if (localTheme) {
-      setTheme(localTheme as Theme);
-      if (localTheme === Theme.DARK) {
-        document.documentElement.classList.add(Theme.DARK);
-      }
+    const storedTheme = localStorage.getItem('theme');
+
+    if (storedTheme === Theme.DARK || storedTheme === Theme.LIGHT) {
+      setTheme(storedTheme);
+      applyTheme(storedTheme);
     }
-    return () => {
-      setTheme(Theme.LIGHT);
-    };
   }, []);
+
+  const toggleTheme = () => {
+    const nextTheme = theme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT;
+    setTheme(nextTheme);
+    applyTheme(nextTheme);
+  };
 
   return <ThemeContext.Provider value={{ theme, toggleTheme }}>{children}</ThemeContext.Provider>;
 };
